@@ -1,0 +1,30 @@
+﻿@page "/"
+@inject IWebHostEnvironment Environment;
+
+<PageTitle>Index</PageTitle>
+
+@foreach(string file in filepaths)
+{
+    <img src="@file"/>
+}
+
+@code {
+    public List<string> filepaths = new List<string>();
+    private string filepath;
+
+    public void GetFilePaths()
+    {
+        foreach(string file in Directory.GetFiles(Path.Combine(this.Environment.WebRootPath, "pics/")))
+        {
+
+            filepath = "/pics/" + file.Substring(Math.Max(0, file.Length - 12));
+            filepaths.Add(filepath);
+            Console.WriteLine(filepath + " was added");
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        GetFilePaths();
+    }
+}
